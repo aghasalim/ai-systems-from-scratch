@@ -1,6 +1,6 @@
 # ai-systems-from-scratch
 
-Seven load-bearing pieces of modern AI, each rebuilt from the papers with a
+Eight load-bearing pieces of modern AI, each rebuilt from the papers with a
 correctness harness, a benchmark, an ablation and an honest write-up. Every
 number in every repository came from a run in that repository, and each one has a
 script in CI that fails the build if the prose and the data stop agreeing.
@@ -17,10 +17,11 @@ what carry the work, and they are valid at small scale.
 | [schrodinger-bridge](https://github.com/aghasalim/schrodinger-bridge-from-scratch) | simulation-free beats alternating | bridge matching 2x to 12x better at a quarter the cost |
 | [mla](https://github.com/aghasalim/mla-from-scratch) | the KV cache is the serving wall | 14.2x cache reduction, 120 GB to 8.4 GB at 128k context |
 | [world-model](https://github.com/aghasalim/world-model-from-scratch) | learning inside a learned model | the model works, the agent inside it does not, and I say so |
+| [vla](https://github.com/aghasalim/vla-from-scratch) | how a policy should emit an action | a regression head averages two valid routes and drives between them |
 
 ## How they connect
 
-These are not seven unrelated exercises. Three threads run through them.
+These are not eight unrelated exercises. Three threads run through them.
 
 **The memory wall.** `flash-attention` attacks it from the kernel side, fusing the
 softmax so the score matrix never reaches memory. `mla` attacks the same wall from
@@ -31,7 +32,9 @@ problem, different floor of the building.
 `latent-diffusion` a curved one, and `schrodinger-bridge` generalises both to
 transport between two arbitrary distributions. Flow matching first is deliberate:
 it is the simpler object, and diffusion then reads as a special case rather than
-as prerequisite machinery.
+as prerequisite machinery. `vla` is where that machinery stops being generative:
+the same flow matching objective becomes a robot action head, and the comparison
+against a diffusion head is a latency argument rather than a quality one.
 
 **What optimisation costs.** `rlhf-ppo` measures a policy exploiting an imperfect
 reward until the true objective collapses. `world-model` measures an agent
@@ -53,7 +56,7 @@ want.
    believable.
 7. Say "not measured on this hardware" rather than extrapolating.
 
-Rules 6 and 7 do real work. Four of the seven repositories contain a result that
+Rules 6 and 7 do real work. Four of the eight repositories contain a result that
 is unflattering to the thing being built, and one contains a claim I made and
 then had to withdraw after checking its error bar.
 
@@ -73,6 +76,9 @@ The logbooks are the most useful files in these repositories. A sample:
   deepcopy, so the second run of a sweep silently had nothing to optimise.
 - A trend read off single-run data **twice**, withdrawn both times once repeats
   gave it an error bar.
+- A train/test split that returned fewer objects than a scene needs and left the
+  rest at their zero initialised default, quietly putting a training object into
+  the held out evaluation set. No error, no crash, caught by a test.
 
 ## Author
 
