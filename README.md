@@ -3,7 +3,10 @@
 Eight load-bearing pieces of modern AI, each rebuilt from the papers with a
 correctness harness, a benchmark, an ablation and an honest write-up. Every
 number in every repository came from a run in that repository, and each one has a
-script in CI that fails the build if the prose and the data stop agreeing.
+script in CI that fails the build if the prose and the data stop agreeing. The
+headline figures in the table below are recomputed from the raw inputs by the
+independent implementations in `verify/`, and CI fails the build on any
+disagreement.
 
 All of it runs on a laptop CPU. Scaling down is not cheating: the ablations are
 what carry the work, and they are valid at small scale.
@@ -79,31 +82,6 @@ The logbooks are the most useful files in these repositories. A sample:
 - A train/test split that returned fewer objects than a scene needs and left the
   rest at their zero initialised default, quietly putting a training object into
   the held out evaluation set. No error, no crash, caught by a test.
-
-## Cross-language verification
-
-The numbers in the table above (speed ratios, cache sizes, compute factors) are
-checked by eight independent implementations in `verify/`. Each one reads the
-same `verify/claims.tsv` ledger, recomputes every published value from the raw
-inputs, and checks that the matching phrase appears in this README.
-
-| # | language | file |
-|---|----------|------|
-| 1 | SQL | `verify/claims.sql` |
-| 2 | C | `verify/claims.c` |
-| 3 | Go | `verify/gocheck/main.go` |
-| 4 | JavaScript | `verify/claims.mjs` |
-| 5 | Python | `verify/claims.py` |
-| 6 | R | `verify/claims.R` |
-| 7 | Ruby | `verify/claims.rb` |
-| 8 | Shell | inline in `verify/verify.sh` |
-
-CI runs all eight on every push, plus a perturbation test that corrupts a value,
-confirms rejection, restores, and confirms acceptance.
-
-Rounding: C, Go, JavaScript, and Shell use round-half-away-from-zero. Python and
-R use banker's rounding. All eight agree on every value in the current ledger
-because no value sits on a 0.5 boundary.
 
 ## Author
 
