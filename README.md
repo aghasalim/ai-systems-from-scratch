@@ -14,7 +14,7 @@ what carry the work, and they are valid at small scale.
 | [latent-diffusion](https://github.com/aghasalim/latent-diffusion-from-scratch) | compression before generation | 5.3x faster training, 6.2x better samples at matched steps |
 | [rectified-flow](https://github.com/aghasalim/rectified-flow-from-scratch) | straight paths mean cheap sampling | reflow buys 1-step sampling, 128x less compute, no loss |
 | [rlhf-ppo](https://github.com/aghasalim/rlhf-ppo-from-scratch) | optimising a proxy has a cost | gold reward peaks then falls below the starting policy |
-| [schrodinger-bridge](https://github.com/aghasalim/schrodinger-bridge-from-scratch) | simulation-free beats alternating | bridge matching 2x to 12x better at a quarter the cost |
+| [schrodinger-bridge](https://github.com/aghasalim/schrodinger-bridge-from-scratch) | simulation-free beats alternating | bridge matching 1.3x to 12x better at a quarter the cost |
 | [mla](https://github.com/aghasalim/mla-from-scratch) | the KV cache is the serving wall | 14.2x cache reduction, 120 GB to 8.4 GB at 128k context |
 | [world-model](https://github.com/aghasalim/world-model-from-scratch) | learning inside a learned model | the model works, the agent inside it does not, and I say so |
 | [vla](https://github.com/aghasalim/vla-from-scratch) | how a policy should emit an action | a regression head averages two valid routes and drives between them |
@@ -79,6 +79,31 @@ The logbooks are the most useful files in these repositories. A sample:
 - A train/test split that returned fewer objects than a scene needs and left the
   rest at their zero initialised default, quietly putting a training object into
   the held out evaluation set. No error, no crash, caught by a test.
+
+## Cross-language verification
+
+The numbers in the table above (speed ratios, cache sizes, compute factors) are
+checked by eight independent implementations in `verify/`. Each one reads the
+same `verify/claims.tsv` ledger, recomputes every published value from the raw
+inputs, and checks that the matching phrase appears in this README.
+
+| # | language | file |
+|---|----------|------|
+| 1 | SQL | `verify/claims.sql` |
+| 2 | C | `verify/claims.c` |
+| 3 | Go | `verify/gocheck/main.go` |
+| 4 | JavaScript | `verify/claims.mjs` |
+| 5 | Python | `verify/claims.py` |
+| 6 | R | `verify/claims.R` |
+| 7 | Ruby | `verify/claims.rb` |
+| 8 | Shell | inline in `verify/verify.sh` |
+
+CI runs all eight on every push, plus a perturbation test that corrupts a value,
+confirms rejection, restores, and confirms acceptance.
+
+Rounding: C, Go, JavaScript, and Shell use round-half-away-from-zero. Python and
+R use banker's rounding. All eight agree on every value in the current ledger
+because no value sits on a 0.5 boundary.
 
 ## Author
 

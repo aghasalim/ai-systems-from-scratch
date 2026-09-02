@@ -1,0 +1,32 @@
+name: verify
+on: [push, pull_request]
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.21"
+      - name: Install R
+        run: sudo apt-get update && sudo apt-get install -y r-base
+      - name: Run eight-language verification
+        run: bash verify/verify.sh
+
+  perturbation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Corrupt a value and confirm rejection
+        run: |
+          sed -i 's/5\.3\t-\t5\.3/5.3\t-\t9.9/' verify/claims.tsv
+          if bash verify/verify.sh 2>/dev/null; then
+            echo "ERROR: harness accepted corrupted data"
+            exit 1
+          fi
+          echo "Good: harness rejected corrupted data"
+      - name: Restore and confirm acceptance
+        run: |
+          git checkout verify/claims.tsv
+          bash verify/verify.sh

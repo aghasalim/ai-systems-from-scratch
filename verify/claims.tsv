@@ -1,0 +1,9 @@
+id	repo	phrase	rule	a	b	published
+ld_speed	latent-diffusion-from-scratch	5.3x faster training	copy	5.3	-	5.3
+ld_quality	latent-diffusion-from-scratch	6.2x better samples	copy	6.2	-	6.2
+rf_steps	rectified-flow-from-scratch	128x less compute	copy	128	-	128
+sb_lo	schrodinger-bridge-from-scratch	1.3x to 12x	round1	1.292	-	1.3
+sb_hi	schrodinger-bridge-from-scratch	12x better	round0	12.08	-	12
+mla_ratio	mla-from-scratch	14.2x cache reduction	ratio1	120	8.44	14.2
+mla_before	mla-from-scratch	120 GB	copy	120	-	120
+mla_after	mla-from-scratch	8.4 GB	round1	8.44	-	8.4
