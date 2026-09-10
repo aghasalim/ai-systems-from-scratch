@@ -18,6 +18,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.21"
+      - name: Install R
+        run: sudo apt-get update && sudo apt-get install -y r-base
+      - name: Every checker runs before anything is corrupted
+        run: bash verify/verify.sh
       - name: Corrupt a value and confirm rejection
         run: |
           sed -i 's/5\.3\t-\t5\.3/5.3\t-\t9.9/' verify/claims.tsv
