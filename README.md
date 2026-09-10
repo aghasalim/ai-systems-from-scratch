@@ -83,14 +83,6 @@ The logbooks are the most useful files in these repositories. A sample:
   rest at their zero initialised default, quietly putting a training object into
   the held out evaluation set. No error, no crash, caught by a test.
 
-## Author
-
-Aghasalim Mustafazada, third year AI student at Howest, Belgium.
-[Website](https://aghasalim.github.io/) ·
-[GitHub](https://github.com/aghasalim) ·
-[Kaggle](https://www.kaggle.com/aghasalimmustafazada) ·
-[ORCID](https://orcid.org/0009-0001-8746-4582)
-
 ## License
 
 MIT.
