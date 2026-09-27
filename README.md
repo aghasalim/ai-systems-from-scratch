@@ -34,8 +34,7 @@ problem, different floor of the building.
 Generative paths. `rectified-flow` uses a straight interpolant,
 `latent-diffusion` a curved one, and `schrodinger-bridge` generalises both to
 transport between two arbitrary distributions. Flow matching first is deliberate:
-it is the simpler object, and diffusion then reads as a special case, not
-as prerequisite machinery. `vla` is where that machinery stops being generative:
+it is the simpler object, and diffusion then reads as a special case. `vla` is where that machinery stops being generative:
 the same flow matching objective becomes a robot action head, and the comparison
 against a diffusion head is about latency, not quality.
 
@@ -50,7 +49,7 @@ want.
 1. A reference implementation exists before the optimised one.
 2. Never loosen a tolerance to make a test pass.
 3. Relative tolerance beats absolute. The bar is "no worse than the naive
-   implementation in the same precision", not a magic epsilon.
+   implementation in the same precision".
 4. No number that did not come from a measurement. Not from the paper, not
    estimated from the algorithm, not "roughly".
 5. Report variance, not just the point estimate. Three seeds minimum for anything
