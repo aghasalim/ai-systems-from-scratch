@@ -37,7 +37,7 @@ transport between two arbitrary distributions. Flow matching first is deliberate
 it is the simpler object, and diffusion then reads as a special case, not
 as prerequisite machinery. `vla` is where that machinery stops being generative:
 the same flow matching objective becomes a robot action head, and the comparison
-against a diffusion head is a latency argument instead of a quality one.
+against a diffusion head is about latency, not quality.
 
 What optimisation costs. `rlhf-ppo` measures a policy exploiting an imperfect
 reward until the true objective collapses. `world-model` measures an agent
@@ -72,7 +72,7 @@ The logbooks are the most useful files in these repositories. A sample:
 - A distance metric that compared sorted point clouds elementwise, valid only at
   equal sample sizes. A working run whose output matched the target mean to 0.01
   was scored at 3.04, and I went looking for a transport bug that did not exist.
-- A UNet that reconstructed skip channel counts instead of recording them, off by
+- A UNet that reconstructed skip channel counts it should have recorded, off by
   one level. GroupNorm caught it; a plain convolution would have accepted the
   wrong shape and trained badly forever.
 - A reference policy frozen in place, inherited by every later policy through a
