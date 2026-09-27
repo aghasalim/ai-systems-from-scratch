@@ -1,5 +1,7 @@
 # ai-systems-from-scratch
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23003612.svg)](https://doi.org/10.5281/zenodo.23003612)
+
 Eight load-bearing pieces of modern AI, each rebuilt from the papers with a
 correctness harness, a benchmark, an ablation and a write-up. Every
 number in every repository came from a run in that repository, and each one has a
