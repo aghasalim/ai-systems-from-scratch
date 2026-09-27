@@ -1,7 +1,7 @@
 # ai-systems-from-scratch
 
 Eight load-bearing pieces of modern AI, each rebuilt from the papers with a
-correctness harness, a benchmark, an ablation and an honest write-up. Every
+correctness harness, a benchmark, an ablation and a write-up. Every
 number in every repository came from a run in that repository, and each one has a
 script in CI that fails the build if the prose and the data stop agreeing. The
 headline figures in the table below are recomputed from the raw inputs by the
@@ -26,20 +26,20 @@ what carry the work, and they are valid at small scale.
 
 These are not eight unrelated exercises. Three threads run through them.
 
-**The memory wall.** `flash-attention` attacks it from the kernel side, fusing the
+The memory wall. `flash-attention` attacks it from the kernel side, fusing the
 softmax so the score matrix never reaches memory. `mla` attacks the same wall from
 the architecture side, compressing the KV cache so there is less to move. Same
 problem, different floor of the building.
 
-**Generative paths.** `rectified-flow` uses a straight interpolant,
+Generative paths. `rectified-flow` uses a straight interpolant,
 `latent-diffusion` a curved one, and `schrodinger-bridge` generalises both to
 transport between two arbitrary distributions. Flow matching first is deliberate:
-it is the simpler object, and diffusion then reads as a special case rather than
+it is the simpler object, and diffusion then reads as a special case, not
 as prerequisite machinery. `vla` is where that machinery stops being generative:
 the same flow matching objective becomes a robot action head, and the comparison
-against a diffusion head is a latency argument rather than a quality one.
+against a diffusion head is a latency argument instead of a quality one.
 
-**What optimisation costs.** `rlhf-ppo` measures a policy exploiting an imperfect
+What optimisation costs. `rlhf-ppo` measures a policy exploiting an imperfect
 reward until the true objective collapses. `world-model` measures an agent
 learning inside an imperfect model of the world. Both are the same failure in
 different clothes: optimising hard against a learned approximation of what you
@@ -57,7 +57,7 @@ want.
    involving training.
 6. Negative results stay in. An ablation table containing only wins is not
    believable.
-7. Say "not measured on this hardware" rather than extrapolating.
+7. Say "not measured on this hardware" instead of extrapolating.
 
 Rules 6 and 7 do real work. Four of the eight repositories contain a result that
 is unflattering to the thing being built, and one contains a claim I made and
