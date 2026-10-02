@@ -2,7 +2,8 @@
 set -euo pipefail
 root="$(cd "$(dirname "$0")/.." && pwd)"
 fail=0
-
+# the Shell checker formats with printf '%.1f'; a comma-decimal locale would break every comparison
+export LC_NUMERIC=C
 
 # --- SQL ---
 printf '%-6s ' SQL
