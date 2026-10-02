@@ -3,7 +3,6 @@ set -euo pipefail
 root="$(cd "$(dirname "$0")/.." && pwd)"
 fail=0
 
-run () { printf '%-6s ' "$1"; if "$@" "$root"; then :; else echo "FAILED"; fail=1; fi }
 
 # --- SQL ---
 printf '%-6s ' SQL
