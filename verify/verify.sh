@@ -18,8 +18,10 @@ fi
 
 # --- C ---
 printf '%-6s ' C
-cc -std=c99 -O2 -Wall -o /tmp/claimc verify/claims.c -lm
-/tmp/claimc "$root" || { fail=1; }
+claimc=$(mktemp)
+cc -std=c99 -O2 -Wall -o "$claimc" verify/claims.c -lm
+"$claimc" "$root" || { fail=1; }
+rm -f "$claimc"
 
 # --- Go ---
 printf '%-6s ' Go
