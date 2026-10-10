@@ -6,8 +6,12 @@ I rebuilt eight important pieces of modern AI from the papers. Each one has a
 correctness harness, a benchmark, an ablation and a write-up. Every number in
 each repository came from a run in that repository. Each repo also has a CI
 script that fails the build if the text and the data stop agreeing. The headline
-figures in the table below are recomputed from the raw inputs by separate
-implementations in `verify/`, and CI fails the build if anything disagrees.
+figures in the table below are not recomputed here. I copied each source value by
+hand from that repository's README into `verify/claims.tsv`, and for most rows the
+published figure is that value as it stands. The scripts in `verify/` only check
+that every figure appears in the table and that the rounded and derived ones
+(like 14.2x from 120 GB and 8.44 GB) follow from their source values. CI fails if
+anything disagrees, but a wrong source value would get through.
 
 Everything runs on a laptop CPU. I don't think scaling down is cheating here,
 since the ablations do most of the work and they still hold at small scale.
@@ -17,11 +21,11 @@ since the ablations do most of the work and they still hold at small scale.
 | [flash-attention](https://github.com/aghasalim/flash-attention-from-scratch) | attention is a memory traffic problem | fusion worth about 3x, throughput 22% to 67% of peak |
 | [latent-diffusion](https://github.com/aghasalim/latent-diffusion-from-scratch) | compression before generation | 5.3x faster training, 6.2x better samples at matched steps |
 | [rectified-flow](https://github.com/aghasalim/rectified-flow-from-scratch) | straight paths mean cheap sampling | reflow buys 1-step sampling, 128x less compute, no loss |
-| [rlhf-ppo](https://github.com/aghasalim/rlhf-ppo-from-scratch) | optimising a proxy has a cost | gold reward peaks then falls below the starting policy |
+| [rlhf-ppo](https://github.com/aghasalim/rlhf-ppo-from-scratch) | optimising a proxy has a cost | gold reward peaks at +1.32 then falls to -1.43, below the starting policy's -1.08 |
 | [schrodinger-bridge](https://github.com/aghasalim/schrodinger-bridge-from-scratch) | simulation-free beats alternating | bridge matching 1.3x to 12x better at a quarter the cost |
 | [mla](https://github.com/aghasalim/mla-from-scratch) | the KV cache is the serving wall | 14.2x cache reduction, 120 GB to 8.4 GB at 128k context |
-| [world-model](https://github.com/aghasalim/world-model-from-scratch) | learning inside a learned model | the model works, the agent inside it does not, and I say so |
-| [vla](https://github.com/aghasalim/vla-from-scratch) | how a policy should emit an action | a regression head averages two valid routes and drives between them |
+| [world-model](https://github.com/aghasalim/world-model-from-scratch) | learning inside a learned model | the model works, but at 57,600 steps the agent inside it does not beat random, and I say so |
+| [vla](https://github.com/aghasalim/vla-from-scratch) | how a policy should emit an action | a regression head averages two valid routes and drives between them, 8.44 collisions per episode against 3.56 for flow |
 
 ## How they connect
 

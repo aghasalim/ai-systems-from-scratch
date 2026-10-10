@@ -7,3 +7,12 @@ sb_hi	schrodinger-bridge-from-scratch	12x better	round0	12.08	-	12
 mla_ratio	mla-from-scratch	14.2x cache reduction	ratio1	120	8.44	14.2
 mla_before	mla-from-scratch	120 GB	copy	120	-	120
 mla_after	mla-from-scratch	8.4 GB	round1	8.44	-	8.4
+fa_fusion	flash-attention-from-scratch	fusion worth about 3x	ratio0	67	22	3
+fa_before	flash-attention-from-scratch	throughput 22% to 67% of peak	copy	22	-	22
+fa_after	flash-attention-from-scratch	to 67% of peak	copy	67	-	67
+rlhf_peak	rlhf-ppo-from-scratch	peaks at +1.32	round2	1.320	-	1.32
+rlhf_end	rlhf-ppo-from-scratch	falls to -1.43	round2	-1.426	-	-1.43
+rlhf_ref	rlhf-ppo-from-scratch	starting policy's -1.08	round2	-1.081	-	-1.08
+wm_short	world-model-from-scratch	at 57,600 steps	copy	57600	-	57600
+vla_reg	vla-from-scratch	8.44 collisions per episode	copy	8.44	-	8.44
+vla_flow	vla-from-scratch	against 3.56 for flow	copy	3.56	-	3.56
