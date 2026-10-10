@@ -2,16 +2,15 @@
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23003612.svg)](https://doi.org/10.5281/zenodo.23003612)
 
-Eight load-bearing pieces of modern AI, each rebuilt from the papers with a
-correctness harness, a benchmark, an ablation and a write-up. Every
-number in every repository came from a run in that repository, and each one has a
-script in CI that fails the build if the prose and the data stop agreeing. The
-headline figures in the table below are recomputed from the raw inputs by the
-independent implementations in `verify/`, and CI fails the build on any
-disagreement.
+I rebuilt eight important pieces of modern AI from the papers. Each one has a
+correctness harness, a benchmark, an ablation and a write-up. Every number in
+each repository came from a run in that repository. Each repo also has a CI
+script that fails the build if the text and the data stop agreeing. The headline
+figures in the table below are recomputed from the raw inputs by separate
+implementations in `verify/`, and CI fails the build if anything disagrees.
 
-All of it runs on a laptop CPU. Scaling down is not cheating: the ablations are
-what carry the work, and they are valid at small scale.
+Everything runs on a laptop CPU. I don't think scaling down is cheating here,
+since the ablations do most of the work and they still hold at small scale.
 
 | repository | what it establishes | headline result |
 |---|---|---|
@@ -26,63 +25,66 @@ what carry the work, and they are valid at small scale.
 
 ## How they connect
 
-These are not eight unrelated exercises. Three threads run through them.
+The projects are linked, and I picked them with three themes in mind.
 
-The memory wall. `flash-attention` attacks it from the kernel side, fusing the
-softmax so the score matrix never reaches memory. `mla` attacks the same wall from
-the architecture side, compressing the KV cache so there is less to move. Same
-problem, different floor of the building.
+The first is memory. In `flash-attention` I fuse the softmax so the score matrix
+never gets written to memory, which tackles the problem from the kernel side. In
+`mla` I compress the KV cache so there's less to move, which tackles the same
+problem through the architecture.
 
-Generative paths. `rectified-flow` uses a straight interpolant,
-`latent-diffusion` a curved one, and `schrodinger-bridge` generalises both to
-transport between two arbitrary distributions. Flow matching first is deliberate:
-it is the simpler object, and diffusion then reads as a special case. `vla` is where that machinery stops being generative:
-the same flow matching objective becomes a robot action head, and the comparison
-against a diffusion head is about latency, not quality.
+The second is generative paths. `rectified-flow` uses a straight interpolant and
+`latent-diffusion` uses a curved one. `schrodinger-bridge` generalises both to
+transport between two arbitrary distributions. I did flow matching first on
+purpose, because it's simpler, and after that diffusion looks like a special case.
+In `vla` the same flow matching objective turns into a robot action head. There
+I compare it with a diffusion head mostly on latency.
 
-What optimisation costs. `rlhf-ppo` measures a policy exploiting an imperfect
-reward until the true objective collapses. `world-model` measures an agent
-learning inside an imperfect model of the world. Both are the same failure in
-different clothes: optimising hard against a learned approximation of what you
-want.
+The third is what optimisation costs. In `rlhf-ppo` a policy exploits an
+imperfect reward until the true objective collapses. In `world-model` an agent
+learns inside an imperfect model of the world. To me they're the same failure.
+In both, something gets optimised hard against a learned approximation of what
+you actually want.
 
 ## The rules every repository follows
 
-1. A reference implementation exists before the optimised one.
-2. Never loosen a tolerance to make a test pass.
-3. Relative tolerance beats absolute. The bar is "no worse than the naive
+1. I write a reference implementation before the optimised one.
+2. I never loosen a tolerance just to make a test pass.
+3. I use relative tolerance over absolute. The bar is "no worse than the naive
    implementation in the same precision".
-4. No number that did not come from a measurement. Not from the paper, not
-   estimated from the algorithm, not "roughly".
-5. Report variance, not just the point estimate. Three seeds minimum for anything
-   involving training.
-6. Negative results stay in. An ablation table containing only wins is not
-   believable.
-7. Say "not measured on this hardware" instead of extrapolating.
+4. Every number comes from a measurement. I don't take numbers from the paper,
+   estimate them from the algorithm, or round them by feel.
+5. I report variance along with the point estimate, with at least three seeds for
+   anything that involves training.
+6. Negative results stay in. I wouldn't believe an ablation table with only wins
+   in it.
+7. I write "not measured on this hardware" instead of extrapolating.
 
-Rules 6 and 7 do real work. Four of the eight repositories contain a result that
-is unflattering to the thing being built, and one contains a claim I made and
-then had to withdraw after checking its error bar.
+Rules 6 and 7 mattered a lot in practice. Four of the eight repositories have a
+result that makes the thing I built look worse. One has a claim I made and then
+had to take back after I checked its error bar.
 
 ## Things that went wrong, and what they cost
 
-The logbooks are the most useful files in these repositories. A sample:
+I think the logbooks are the most useful files in these repositories. Here are
+some of the mistakes from them.
 
-- A backward drift **reversed twice**, because the DSB target already encodes the
-  reversal. Forward loss reached 1.5e11 before I found it.
-- A distance metric that compared sorted point clouds elementwise, valid only at
-  equal sample sizes. A working run whose output matched the target mean to 0.01
-  was scored at 3.04, and I went looking for a transport bug that did not exist.
-- A UNet that reconstructed skip channel counts it should have recorded, off by
-  one level. GroupNorm caught it; a plain convolution would have accepted the
-  wrong shape and trained badly forever.
-- A reference policy frozen in place, inherited by every later policy through a
-  deepcopy, so the second run of a sweep silently had nothing to optimise.
-- A trend read off single-run data **twice**, withdrawn both times once repeats
-  gave it an error bar.
-- A train/test split that returned fewer objects than a scene needs and left the
-  rest at their zero initialised default, quietly putting a training object into
-  the held out evaluation set. No error, no crash, caught by a test.
+- I reversed a backward drift twice, because the DSB target already includes the
+  reversal. Forward loss got to 1.5e11 before I found it.
+- My distance metric compared sorted point clouds element by element, which only
+  works when the sample sizes are equal. A working run that matched the target
+  mean to 0.01 got scored at 3.04, and I went hunting for a transport bug that
+  didn't exist.
+- My UNet rebuilt skip channel counts that it should have saved, and was off by
+  one level. GroupNorm caught it. A plain convolution would have accepted the
+  wrong shape and kept training badly.
+- I froze a reference policy in place, and every later policy inherited that
+  through a deepcopy. So from the second run of a sweep on, nothing was being
+  optimised, and nothing told me.
+- Twice I read a trend off single-run data, and both times I had to take it back
+  once repeats gave it an error bar.
+- A train/test split returned fewer objects than a scene needs and left the rest
+  at their zero initialised default. That quietly put a training object into the
+  held out evaluation set. There was no error and no crash, and a test caught it.
 
 ## License
 
