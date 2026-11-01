@@ -27,6 +27,10 @@ since the ablations do most of the work and they still hold at small scale.
 | [world-model](https://github.com/aghasalim/world-model-from-scratch) | learning inside a learned model | the model works, but at 57,600 steps the agent inside it does not beat random, and I say so |
 | [vla](https://github.com/aghasalim/vla-from-scratch) | how a policy should emit an action | a regression head averages two valid routes and drives between them, 8.44 collisions per episode against 3.56 for flow |
 
+![headline results per repository](docs/claims.png)
+
+The same headline values as the table, plotted from `verify/claims.tsv`.
+
 ## How they connect
 
 The projects are linked, and I picked them with three themes in mind.
@@ -48,6 +52,10 @@ imperfect reward until the true objective collapses. In `world-model` an agent
 learns inside an imperfect model of the world. To me they're the same failure.
 In both, something gets optimised hard against a learned approximation of what
 you actually want.
+
+![one result figure from each repository](docs/contact-sheet.png)
+
+One existing result figure from each repository, copied as is and labelled with its repo and path.
 
 ## The rules every repository follows
 
