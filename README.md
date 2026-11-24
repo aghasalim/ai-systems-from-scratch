@@ -1,3 +1,5 @@
+<p align="center"><img src="assets/banner.jpg" alt="Line drawing of eight small tiles, each with a different diagram of a machine learning method" width="100%"></p>
+
 # ai-systems-from-scratch
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23003612.svg)](https://doi.org/10.5281/zenodo.23003612)
