@@ -57,46 +57,10 @@ you actually want.
 
 One existing result figure from each repository, copied as is and labelled with its repo and path.
 
-## The rules every repository follows
+## Working notes
 
-1. I write a reference implementation before the optimised one.
-2. I never loosen a tolerance just to make a test pass.
-3. I use relative tolerance over absolute. The bar is "no worse than the naive
-   implementation in the same precision".
-4. Every number comes from a measurement. I don't take numbers from the paper,
-   estimate them from the algorithm, or round them by feel.
-5. I report variance along with the point estimate, with at least three seeds for
-   anything that involves training.
-6. Negative results stay in. I wouldn't believe an ablation table with only wins
-   in it.
-7. I write "not measured on this hardware" instead of extrapolating.
-
-Rules 6 and 7 mattered a lot in practice. Four of the eight repositories have a
-result that makes the thing I built look worse. One has a claim I made and then
-had to take back after I checked its error bar.
-
-## Things that went wrong, and what they cost
-
-I think the logbooks are the most useful files in these repositories. Here are
-some of the mistakes from them.
-
-- I reversed a backward drift twice, because the DSB target already includes the
-  reversal. Forward loss got to 1.5e11 before I found it.
-- My distance metric compared sorted point clouds element by element, which only
-  works when the sample sizes are equal. A working run that matched the target
-  mean to 0.01 got scored at 3.04, and I went hunting for a transport bug that
-  didn't exist.
-- My UNet rebuilt skip channel counts that it should have saved, and was off by
-  one level. GroupNorm caught it. A plain convolution would have accepted the
-  wrong shape and kept training badly.
-- I froze a reference policy in place, and every later policy inherited that
-  through a deepcopy. So from the second run of a sweep on, nothing was being
-  optimised, and nothing told me.
-- Twice I read a trend off single-run data, and both times I had to take it back
-  once repeats gave it an error bar.
-- A train/test split returned fewer objects than a scene needs and left the rest
-  at their zero initialised default. That quietly put a training object into the
-  held out evaluation set. There was no error and no crash, and a test caught it.
+- [The rules every repository follows](docs/rules.md): the seven rules, and why the last two mattered most.
+- [Things that went wrong, and what they cost](docs/mistakes.md): six mistakes from the logbooks.
 
 ## License
 
